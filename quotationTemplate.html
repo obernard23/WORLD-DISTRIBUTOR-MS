@@ -1,0 +1,390 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+      .itemQty:focus{
+        outline: none;
+      }
+
+      /* #item :nth-child(odd){
+        background-color: #999a9c86;
+        font-weight: bolder;
+        font-size: '15px';
+      } */
+
+      @font-face {
+        font-family: "Inter";
+        src: url("Inter-Regular.ttf") format("truetype");
+        font-weight: 400;
+        font-style: normal;
+      }
+
+      @font-face {
+        font-family: "Inter";
+        src: url("Inter-Medium.ttf") format("truetype");
+        font-weight: 500;
+        font-style: normal;
+      }
+
+      @font-face {
+        font-family: "Inter";
+        src: url("Inter-Bold.ttf") format("truetype");
+        font-weight: 700;
+        font-style: normal;
+      }
+
+      @font-face {
+        font-family: "Space Mono";
+        src: url("SpaceMono-Regular.ttf") format("truetype");
+        font-weight: 400;
+        font-style: normal;
+      }
+
+      #invoice {
+        font-size: 0.75rem;
+        font-family: "Inter", sans-serif;
+        font-weight: 400;
+        color: #000000;
+        margin: 0 auto;
+        position: relative;
+      }
+
+      #pspdfkit-header {
+        font-size: 0.625rem;
+        text-transform: uppercase;
+        letter-spacing: 0px;
+        font-weight: 400;
+        color: #717885;
+        margin-top: 2.5rem;
+        margin-bottom: 2.5rem;
+        width: 100%;
+      }
+
+      .header-columns {
+        display: flex;
+        justify-content: space-between;
+        padding-left: 2.5rem;
+        padding-right: 2.5rem;
+      }
+
+      .logo {
+        height: 3rem;
+        width: auto;
+        margin-right: 1rem;
+      }
+
+      .logotype {
+        display: flex;
+        align-items: center;
+        font-weight: 700;
+      }
+
+      h2{
+        font-family: "Space Mono", monospace;
+        font-size: 1.25rem;
+        font-weight: 400;
+      }
+
+      h4 {
+        font-family: "Space Mono", monospace;
+        font-size: 1rem;
+        font-weight: 400;
+      }
+
+     
+
+      .intro-table {
+        display: flex;
+        justify-content: space-between;
+        margin: 3rem 0 3rem 0;
+        border-top: 1px solid #000000;
+        border-bottom: 1px solid #000000;
+      }
+
+      
+
+      .intro-form:last-child {
+        border-right: none;
+      }
+
+      .intro-table-title {
+        font-size:1rem;
+        margin: 0;
+      }
+
+      .intro-form-item {
+        padding: 1.25rem 1.5rem 1.25rem 1.5rem;
+      }
+
+      .intro-form-item:first-child {
+        padding-left: 0;
+      }
+
+      .intro-form-item:last-child {
+        padding-right: 0;
+      }
+
+      .intro-form-item-border {
+        padding: 1.25rem 0 0.75rem 1.5rem;
+        border-bottom: 1px solid #000000;
+      }
+
+      .intro-form-item-border:last-child {
+        border-bottom: none;
+      }
+
+
+      .no-border {
+        border: none;
+      }
+
+      .border {
+        border: 1px solid #000000;
+      }
+
+      .border-bottom {
+        border: 1px solid #000000;
+        border-top: none;
+        border-left: none;
+        border-right: none;
+      }
+
+      .signer {
+        display: flex;
+        justify-content: space-between;
+        gap: 2.5rem;
+        margin: 2rem 0 2rem 0;
+      }
+
+      input#signature {
+        height: 8rem;
+      }
+
+      .intro-text {
+        width: 60%;
+      }
+
+      .table-box table,
+      .summary-box table {
+        width: 100%;
+        font-size: 0.625rem;
+      }
+
+      .table-box table {
+        padding-top: 1rem;
+      }
+
+      .table-box td:first-child,
+      .summary-box td:first-child {
+        width: 50%;
+      }
+
+      .table-box td:last-child,
+      .summary-box td:last-child {
+        text-align: right;
+      }
+
+      .table-box table tr.heading td {
+        border-top: 1px solid #000000;
+        border-bottom: 1px solid #000000;
+        height: 1.5rem;
+      }
+
+      .table-box table tr.item td,
+      .summary-box table tr.item td {
+        border-bottom: 1px solid #d7dce4;
+        height: 1.5rem;
+      }
+
+      .summary-box table tr.no-border-item td {
+        border-bottom: none;
+        height: 1.5rem;
+      }
+
+      .summary-box table tr.total td {
+        border-top: 1px solid #000000;
+        border-bottom: 1px solid #000000;
+        height: 1.5rem;
+      }
+
+      .summary-box table tr.item td:first-child,
+      .summary-box table tr.total td:first-child {
+        border: none;
+        height: 1.5rem;
+      }
+
+      #pspdfkit-footer {
+        font-size: 0.5rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-weight: 500;
+        color: #717885;
+        margin-top: 2.5rem;
+        bottom: 2.5rem;
+        position: absolute;
+        width: 100%;
+      }
+
+      .footer-columns {
+        display: flex;
+        justify-content: space-between;
+        padding-left: 2.5rem;
+        padding-right: 2.5rem;
+      }
+
+          .box {
+      position: relative;
+    }
+    .ribbon {
+      position: absolute;
+      right: -5px; top: -5px;
+      z-index: 1;
+      overflow: hidden;
+      width: 75px; height: 75px;
+      text-align: right;
+    }
+    .ribbon span {
+      font-size: 10px;
+      font-weight: bold;
+      color: #FFF;
+      text-transform: uppercase;
+      text-align: center;
+      line-height: 20px;
+      transform: rotate(45deg);
+      -webkit-transform: rotate(45deg);
+      width: 100px;
+      display: block;
+      background: #79A70A;
+      background: linear-gradient(#9BC90D 0%, #79A70A 100%);
+      box-shadow: 0 3px 10px -5px rgba(0, 0, 0, 1);
+      position: absolute;
+      top: 19px; right: -21px;
+    }
+    .ribbon span::before {
+      content: "";
+      position: absolute; left: 0px; top: 100%;
+      z-index: -1;
+      border-left: 3px solid #79A70A;
+      border-right: 3px solid transparent;
+      border-bottom: 3px solid transparent;
+      border-top: 3px solid #79A70A;
+    }
+    .ribbon span::after {
+      content: "";
+      position: absolute; right: 0px; top: 100%;
+      z-index: -1;
+      border-left: 3px solid transparent;
+      border-right: 3px solid #79A70A;
+      border-bottom: 3px solid transparent;
+      border-top: 3px solid #79A70A;
+    }
+        </style>
+  </head>
+
+  <body>
+    <!-- approve and reject buttons -->
+
+    <div id="invoice" class="shadow-lg m-4 p-3 box ">
+      <!-- <div class="ribbon"><span>VERIFIED</span></div> -->
+      <div id="pspdfkit-header">
+     
+     <div  class="table-box">
+     <table>
+      <tbody>
+        <tr>
+          <tr>
+           <td> 
+            GREATKAMSI MULTI-INVESTMENT NIG LTD <br>
+            <h6> CM/104 COMPLEX KARU NEW MARKET, KARU ABUJA</h6> 
+             <h6>[GREATKAMSI1@GMAIL.COM], 08158491682</h6>
+             <td></td>
+             <td></td>
+             <td></td>
+             <td></td>
+             <td>
+              <img  width="100" height="100" src="https://firebasestorage.googleapis.com/v0/b/bigbern-erp.appspot.com/o/product%20photo%2FE59FC570-AFE3-42A7-8A02-D5DF56B2DDA7.png?alt=media&token=16777239-ac94-4c77-a03d-f342d2deed27" />
+             </td>
+           </td>
+          </tr>
+
+        </tr>
+        <tr>
+          <td>
+            {{WayBillNo}}
+          </td>
+          <td>
+            
+           
+          </td>
+          <td>
+            "{{billStatus}}/{{billReferenceNo}}"
+          </td>
+         
+        </tr>
+      </tbody>
+     </table>
+      </div>
+      <small>{{customerName}} <br> {{startDate}}</small>
+        </div>
+      </div>
+        <div class="table-box">
+          <table cellpadding="0" cellspacing="0">
+            <tr class="heading font-bold">
+              <td  >Product</td>
+              <td  >Qty</td>
+              <td  >uom</td>
+              <td class="border" >vat</td>
+              <td  >unit</td>
+              <td  >Total</td>
+            </tr>
+            <tbody  class="item" id="item">
+             
+              <!-- define all ites in orders here -->
+              {{#each orders}}
+              <tr class="heading font-bold" title="<%=bill.item.Description%>">
+                <td >{{this.item.Name}}</td>
+                <td >{{this.Qty}}</td>
+                <td >{{this.scale}}</td>
+                <td class="border">{{this.item.VAT}}</td>
+                <td >₦{{this.priceListPrice}}</td>
+                <td >₦{{this.total}}</td>
+              </tr>
+              {{/each }}
+                 
+               
+            </tbody>
+            <tbody class="item" id="promosection">
+              <tr class="heading font-bold">
+                <td >Sub: ₦{{grandTotal}}</td>
+                <td>Dis: ₦{{discount}}</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>Total: ₦{{subTotal}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="table-box" style="border:none !important">
+      <table >
+        <tbody  class="item">
+                <tr class="heading font-bold">
+                <td>Customer Sign</td>
+                <td></td>
+                <td for="signature" class="label">{{RaiseBy}}</td>
+                <td> <img class="logo" img class="logo" src="{{signatureUrl}}" id="signature"></td>
+                </tr>
+        </tbody>
+      </table>
+    </div>
+      </div>
+
+    </div>
+ 
+  </body>
+</html>
